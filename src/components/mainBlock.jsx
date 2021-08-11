@@ -86,7 +86,9 @@ class MainBlock extends Component {
                 this.setState({ processes })
             })
     }
-    handleDownload = (cateId) => {
+    handleDownload = () => {
+        const { mainCategory, subCategory, itemCategory } = this.state
+        const cateId = itemCategory.value || subCategory.value || mainCategory.value
         downloadProductsByCateId(cateId)
             .then(data => {
                 download(data, `download_${cateId}.json`, 'text/plain')
@@ -132,7 +134,8 @@ class MainBlock extends Component {
             <React.Fragment>
                 <div className="row">
                     <CategoryForm mainCategory={mainCategory} subCategory={subCategory} itemCategory={itemCategory} handleSubmit={this.handleSubmit}
-                        handleChange={this.handleChange} handleGenCate={this.handleGenCate} handleLock={this.handleLock} lockButton={lockButton} />
+                        handleChange={this.handleChange} handleGenCate={this.handleGenCate} handleLock={this.handleLock} lockButton={lockButton}
+                        handleDownload={this.handleDownload} />
                 </div>
                 <div className="row mt-3">
                     <ProcessList processes={processes} handleDelete={this.handleDelete} handleStop={this.handleStop} handleStart={this.handleStart} lockButton={lockButton} />

@@ -7,7 +7,7 @@ class CategoryForm extends Component {
 
 
     render() {
-        const { mainCategory, subCategory, itemCategory, handleSubmit, handleChange, handleGenCate, handleLock, lockButton } = this.props
+        const { mainCategory, subCategory, itemCategory, handleSubmit, handleChange, handleGenCate, handleLock, lockButton, handleDownload } = this.props
         return (
             <form className="row g-3" onSubmit={handleSubmit}>
                 <div className="col-auto">
@@ -24,9 +24,14 @@ class CategoryForm extends Component {
                     <button type="submit" className="btn btn-primary d-block" disabled={!lockButton}>Run</button>
                 </div>
                 <div className="col-auto" >
+                    <label className="mb-2 ms-2 px-3">&nbsp;</label>
+                    <button type="button" className="btn btn-warning  d-block " onClick={handleDownload}>Download</button>
+                </div>
+                <div className="col-auto" >
                     <label className="mb-2 ms-2 px-3" onDoubleClick={handleLock} >&nbsp;</label>
                     <button type="button" className="btn btn-primary d-block" style={{ visibility: lockButton ? "hidden" : "visible" }} onClick={handleGenCate}>Regenerate Category</button>
                 </div>
+
 
             </form>
 

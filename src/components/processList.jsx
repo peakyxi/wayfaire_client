@@ -4,7 +4,7 @@ class Processes extends Component {
 
 
     render() {
-        const { processes, handleDelete, handleStop, handleStart, handleDownload, lockButton } = this.props
+        const { processes, handleDelete, handleStop, handleStart, lockButton } = this.props
         return (
 
 
@@ -32,7 +32,7 @@ class Processes extends Component {
                                 {process.statusCode === 1 && <button type="button" className="btn btn-warning" disabled={!lockButton} onClick={() => handleStop(process.belong._id, i)}>Stop</button>}
                                 {process.statusCode === 0 && <button type="button" className="btn btn-warning" disabled={!lockButton} onClick={() => handleStart(process.belong._id)}>Resume</button>}
                                 <button type="button" className="btn btn-warning ms-2" disabled={!lockButton} onClick={() => handleDelete(process.belong._id, i)}>Delete</button>
-                                <button type="button" className="btn btn-warning ms-2" disabled={!lockButton} onClick={() => handleDownload(process.belong._id, i)}>Download</button>
+
                             </td>
                         </tr>
                     )}
