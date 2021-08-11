@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import CategoryForm from './categoryForm'
 import ProcessList from './processList';
+import download from 'downloadjs'
 import { getCategoriesByParentId, fireScrapingByCategory } from '../services/category_service'
 
-import { getAllProcesses, stopProcess, deleteProcess, getProcessesByIds, fireProductScraping } from '../services/process_service'
+import { getAllProcesses, stopProcess, deleteProcess, getProcessesByIds, fireProductScraping, downloadProductsByCateId } from '../services/process_service'
 
 
 class MainBlock extends Component {
@@ -83,6 +84,12 @@ class MainBlock extends Component {
                 }
 
                 this.setState({ processes })
+            })
+    }
+    handleDownload = (cateId) => {
+        downloadProductsByCateId(cateId)
+            .then(data => {
+                download(data, `download_${cateId}.json`, 'text/plain')
             })
     }
     handleSubmit = (e) => {

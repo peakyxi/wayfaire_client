@@ -33,6 +33,11 @@ function fireProductScraping(cateId) {
         .then(({ data }) => data)
 }
 
+function downloadProductsByCateId(cateId) {
+    return http.post(`${apiUrl}/processes/download`, { cid: cateId }, { json: true })
+        .then(({ data }) => data)
+}
 
 
-export { getAllProcesses, stopProcess, deleteProcess, getProcessesByIds, fireProductScraping }
+
+export { getAllProcesses, stopProcess, deleteProcess, getProcessesByIds, fireProductScraping, downloadProductsByCateId }
