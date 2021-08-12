@@ -91,7 +91,7 @@ class MainBlock extends Component {
         const cateId = itemCategory.value || subCategory.value || mainCategory.value
         downloadProductsByCateId(cateId)
             .then(data => {
-                download(data, `download_${cateId}.json`, 'text/plain')
+                download(JSON.stringify(data, null, 2), `download_${cateId}.json`, 'text/plain')
             })
     }
     handleSubmit = (e) => {
