@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import CategoryForm from './categoryForm'
 import ProcessList from './processList';
 import download from 'downloadjs'
+import { toast } from 'react-toastify'
+import { initSockjs } from '../services/ws'
+
 import { getCategoriesByParentId, fireScrapingByCategory } from '../services/category_service'
 
-import { getAllProcesses, stopProcess, deleteProcess, getProcessesByIds, fireProductScraping, downloadProductsByCateId } from '../services/process_service'
+import { getAllProcesses, changeStatus, deleteProcess, getProcessesByIds, fireProductScraping, downloadProductsByCateId } from '../services/process_service'
 
 
 class MainBlock extends Component {
@@ -25,6 +28,7 @@ class MainBlock extends Component {
         lockButton: true
     }
     componentDidMount() {
+        initSockjs(this.updateProcesses)
         getCategoriesByParentId('-1')
             .then(cates => {
                 const mainCategory = JSON.parse(JSON.stringify(this.state.mainCategory))
@@ -34,14 +38,29 @@ class MainBlock extends Component {
                 setTimeout(() => { document.querySelector(`select[name=mainCategory`).dispatchEvent(new Event('change', { bubbles: true })) }, 10)
             })
         getAllProcesses()
-            .then(processes => this.setState({ processes }))
+            .then(processes => {
+
+
+                this.setState({ processes })
+
+            })
             .catch(err => console.log(err.message))
-        this.timerId = setInterval(() => {
-            this._updateprocesses()
-        }, 2000)
+
     }
     componentWillUnmount() {
-        clearInterval(this.timerId)
+
+    }
+
+    updateProcesses = async (processes) => {
+        console.log(processes)
+        this.setState({ processes: JSON.parse(processes) })
+    }
+    updateOne = async (process) => {
+        const processes = JSON.parse(JSON.stringify(this.state.processes))
+        const index = processes.findIndex(p => p._id === process._id)
+        processes[index] = process
+        this.setState({ processes })
+
     }
 
     handleChange = (e, effect) => {
@@ -84,6 +103,8 @@ class MainBlock extends Component {
                 }
 
                 this.setState({ processes })
+            }).catch(err => {
+                toast.error(err.response.data.message)
             })
     }
     handleDownload = () => {
@@ -103,19 +124,16 @@ class MainBlock extends Component {
     handleGenCate = () => {
         fireScrapingByCategory()
     }
-    _updateprocesses() {
-        const ids = this.state.processes.filter(process => process.statusCode == 1).map(process => process._id)
-        if (ids.length) {
-            getProcessesByIds(ids)
-                .then(filteredprocesses => {
-                    let processes = JSON.parse(JSON.stringify(this.state.processes))
-                    processes = processes.filter(process => !ids.includes(process._id)).concat(filteredprocesses)
-                    this.setState({ processes })
-                })
-        }
-    }
-    handleStop = (id, index) => {
-        stopProcess(id)
+
+    handleChangeStatus = (id, status, index) => {
+        changeStatus(id, status)
+            .then(process => {
+                this.updateOne(process)
+            })
+            .catch(err => {
+                console.log("stop error")
+                toast.error(err.response.data.message)
+            })
     }
     handleDelete = (id, index) => {
         deleteProcess(id)
@@ -138,7 +156,7 @@ class MainBlock extends Component {
                         handleDownload={this.handleDownload} />
                 </div>
                 <div className="row mt-3">
-                    <ProcessList processes={processes} handleDelete={this.handleDelete} handleStop={this.handleStop} handleStart={this.handleStart} lockButton={lockButton} />
+                    <ProcessList processes={processes} handleDelete={this.handleDelete} handleChangeStatus={this.handleChangeStatus} handleStart={this.handleStart} lockButton={lockButton} />
                 </div>
 
             </React.Fragment>

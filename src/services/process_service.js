@@ -8,17 +8,17 @@ function getAllProcesses() {
         .catch(err => console.log(err))
 }
 
-function stopProcess(cid) {
-    return http.post(`${apiUrl}/processes/stop`, { cid }, { json: true })
+function changeStatus(pid, status) {
+    return http.put(`${apiUrl}/processes/${pid}`, { status }, { json: true })
         .then(({ data }) => data)
-        .catch(err => console.log(err))
+    // .catch(err => console.log(err))
 
 }
 
-function deleteProcess(cid) {
-    return http.post(`${apiUrl}/processes/delete`, { cid }, { json: true })
+function deleteProcess(pid) {
+    return http.delete(`${apiUrl}/processes/${pid}`)
         .then(({ data }) => data)
-        .catch(err => console.log(err))
+
 }
 
 function getProcessesByIds(ids) {
@@ -29,7 +29,7 @@ function getProcessesByIds(ids) {
 
 
 function fireProductScraping(cateId) {
-    return http.post(`${apiUrl}/processes/scraping`, { cid: cateId }, { json: true })
+    return http.post(`${apiUrl}/processes`, { cid: cateId }, { json: true })
         .then(({ data }) => data)
 }
 
@@ -40,4 +40,4 @@ function downloadProductsByCateId(cateId) {
 
 
 
-export { getAllProcesses, stopProcess, deleteProcess, getProcessesByIds, fireProductScraping, downloadProductsByCateId }
+export { getAllProcesses, changeStatus, deleteProcess, getProcessesByIds, fireProductScraping, downloadProductsByCateId }

@@ -11,13 +11,18 @@ class CategoryForm extends Component {
         return (
             <form className="row g-3" onSubmit={handleSubmit}>
                 <div className="col-auto">
-                    <CategorySelect effect="subCategory" name="mainCategory" label="Category" value={mainCategory.value} options={mainCategory.options} handleChange={handleChange} />
-                </div>
-                <div className="col-auto">
-                    <CategorySelect effect="itemCategory" name="subCategory" label="SubCategory" current={subCategory.value} options={subCategory.options} handleChange={handleChange} />
-                </div>
-                <div className="col-auto">
-                    <CategorySelect effect="" name="itemCategory" label="ItemCategory" current={itemCategory.value} options={itemCategory.options} handleChange={handleChange} />
+                    <div className="row">
+                        <div className="col-auto">
+                            <CategorySelect effect="subCategory" name="mainCategory" label="Category" value={mainCategory.value} options={mainCategory.options} handleChange={handleChange} />
+                        </div>
+                        <div className="col-auto">
+                            <CategorySelect effect="itemCategory" name="subCategory" label="SubCategory" current={subCategory.value} options={subCategory.options} handleChange={handleChange} />
+                        </div>
+                        <div className="col-auto">
+
+                            <CategorySelect effect="" name="itemCategory" label="ItemCategory" current={itemCategory.value} options={itemCategory.options} handleChange={handleChange} />
+                        </div>
+                    </div>
                 </div>
                 <div className="col-auto">
                     <label className="mb-2 ms-2">&nbsp;</label>
@@ -29,7 +34,7 @@ class CategoryForm extends Component {
                 </div>
                 <div className="col-auto" >
                     <label className="mb-2 ms-2 px-3" onDoubleClick={handleLock} >&nbsp;</label>
-                    <button type="button" className="btn btn-primary d-block" style={{ visibility: lockButton ? "hidden" : "visible" }} onClick={handleGenCate}>Regenerate Category</button>
+                    <button type="button" className="btn btn-primary d-block" style={{ visibility: lockButton ? "hidden" : "visible" }} onClick={handleGenCate}>Regen Cates</button>
                 </div>
 
 

@@ -4,7 +4,7 @@ class Processes extends Component {
 
 
     render() {
-        const { processes, handleDelete, handleStop, handleStart, lockButton } = this.props
+        const { processes, handleDelete, handleChangeStatus, lockButton } = this.props
         return (
 
 
@@ -27,11 +27,11 @@ class Processes extends Component {
                             <td>{process.belong && process.belong.name} / <small style={{ color: "grey" }}>{process.belong && process.belong.type}</small></td>
                             <td>{process.status}</td>
                             <td>{process.error}</td>
-                            <td>{process.updated}</td>
+                            <td>{process.updated_short}</td>
                             <td width="15%">
-                                {process.statusCode === 1 && <button type="button" className="btn btn-warning" disabled={!lockButton} onClick={() => handleStop(process.belong._id, i)}>Stop</button>}
-                                {process.statusCode === 0 && <button type="button" className="btn btn-warning" disabled={!lockButton} onClick={() => handleStart(process.belong._id)}>Resume</button>}
-                                <button type="button" className="btn btn-warning ms-2" disabled={!lockButton} onClick={() => handleDelete(process.belong._id, i)}>Delete</button>
+                                {["Initializing", "Running"].includes(process.status) && <button type="button" className="btn btn-warning" disabled={!lockButton || process.disabled} onClick={() => handleChangeStatus(process._id, "Stopping", i)}>Stop</button>}
+                                {["Stopping", "Stopped"].includes(process.status) && <button type="button" className="btn btn-warning" disabled={!lockButton || process.disabled} onClick={() => handleChangeStatus(process._id, "Initializing", i)}>Resume</button>}
+                                <button type="button" className="btn btn-warning ms-2" disabled={!lockButton || process.disabled || process.status != "Stopped"} onClick={() => handleDelete(process._id, i)}>Delete</button>
 
                             </td>
                         </tr>
